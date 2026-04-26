@@ -111,7 +111,7 @@ function initializeSections() {
         'Art Gallery',
         'A Door to Nowhere',
         'World w/o Borders',
-        'Activity 5',
+        'Crossing',
         'Activity 6',
         'Activity 7',
         'Reading List'
