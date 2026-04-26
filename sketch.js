@@ -323,7 +323,115 @@ function drawActivity4() {
     drawBackButton();
 }
 
-function drawActivity5(){drawPlaceholder('Activity 5')}
+// ==========================================
+// ACTIVITY 5: CIRCLES CROSSING THE LINE
+// ==========================================
+
+let circles = [];
+let circleSpawnTimer = 0;
+
+function drawActivity5() {
+    background(245, 240, 235);
+    
+    fill(255, 200, 120);
+    textSize(28);
+    textAlign(CENTER);
+    text('Crossing', width / 2, 50);
+    
+    fill(100);
+    textSize(14);
+    text('Watch as they "cross the border."', width / 2, 85);
+    
+    // Draw the middle line (border)
+    stroke(50);
+    strokeWeight(3);
+    line(0, height / 2, width, height / 2);
+    
+    // Spawn new circles randomly
+    circleSpawnTimer++;
+    if (circleSpawnTimer > random(30, 80)) {
+        spawnCircle();
+        circleSpawnTimer = 0;
+    }
+    
+    // Update and display circles
+    updateCircles();
+    displayCircles();
+    
+    // Draw text prompts
+    drawCrossingText();
+    
+    drawBackButton();
+}
+
+function spawnCircle() {
+    let fromTop = random() > 0.5;
+    let x = random(50, width - 50);
+    let y = fromTop ? 0 : height;
+    let size = random(20, 80);
+    let speed = random(1.5, 3.5);
+    let color = [random(100, 255), random(100, 255), random(100, 255)];
+    
+    circles.push({
+        x: x,
+        y: y,
+        vx: random(-0.5, 0.5),
+        vy: fromTop ? speed : -speed,
+        size: size,
+        color: color,
+        hasPassedLine: false
+    });
+}
+
+function updateCircles() {
+    // Update existing circles
+    for (let i = circles.length - 1; i >= 0; i--) {
+        let c = circles[i];
+        c.x += c.vx;
+        c.y += c.vy;
+        
+        // Check if passed the line
+        if (!c.hasPassedLine && c.vy > 0 && c.y > height / 2) {
+            c.hasPassedLine = true;
+        } else if (!c.hasPassedLine && c.vy < 0 && c.y < height / 2) {
+            c.hasPassedLine = true;
+        }
+        
+        // Remove if off screen
+        if (c.y > height + 100 || c.y < -100) {
+            circles.splice(i, 1);
+        }
+    }
+}
+
+function displayCircles() {
+    for (let c of circles) {
+        fill(c.color[0], c.color[1], c.color[2]);
+        noStroke();
+        circle(c.x, c.y, c.size);
+        
+        // Subtle glow when crossing line
+        if (abs(c.y - height / 2) < c.size) {
+            fill(255, 255, 255, 100);
+            circle(c.x, c.y, c.size + 10);
+        }
+    }
+}
+
+function drawCrossingText() {
+    let textY1 = height - 140;
+    let textY2 = height - 100;
+    let textY3 = height - 60;
+    
+    fill(50);
+    textSize(14);
+    textAlign(CENTER);
+    
+    text('Do we change after we pass a border?', width / 2, textY1);
+    text('Why keep someone from crossing?', width / 2, textY2);
+    text('Are we so different on the different sides of this line?', width / 2, textY3);
+}
+
 function drawActivity6(){drawPlaceholder('Activity 6')}
 function drawActivity7(){drawPlaceholder('Activity 7')}
 
